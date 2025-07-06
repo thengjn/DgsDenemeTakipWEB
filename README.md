@@ -2,6 +2,8 @@
 
 Bu klasör, DGS Deneme Takip uygulamasının web versiyonunu içerir ve GitHub Pages üzerinde çalışır.
 
+## Live Version: https://thengjn.github.io/DgsDenemeTakipWEB/
+
 ## 📂 Dosyalar
 
 - `index.html` - Ana sayfa ve tüm HTML yapısı
