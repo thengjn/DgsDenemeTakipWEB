@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DGS Deneme Takip - Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1976D2, #2196F3);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #1976D2;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1976D2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+
+        /* Touch-friendly adjustments */
+        @media (max-width: 768px) {
+            .form-group input {
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 1.2rem 2rem;
+                font-size: 1.1rem;
+                touch-action: manipulation;
+            }
+            
+            .delete-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                touch-action: manipulation;
+            }
+        }
+
+        .section-title {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+            color: #1976D2;
+        }
+
+        .btn {
+            background: #1976D2;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #1565C0;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .exam-list {
+            margin-top: 2rem;
+        }
+
+        .exam-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .exam-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .exam-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .exam-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .net-scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .net-score {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        .net-score.numerical {
+            background: #e3f2fd;
+            color: #1976D2;
+        }
+
+        .net-score.verbal {
+            background: #e8f5e8;
+            color: #4CAF50;
+        }
+
+        .net-score.total {
+            background: #fff3e0;
+            color: #FF9800;
+        }
+
+        .net-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .net-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1976D2;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #c62828;
+        }
+
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2e7d32;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state img {
+            width: 100px;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .chart-container {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .chart-container.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .chart-container h3 {
+            margin-bottom: 1rem;
+            color: #1976D2;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .chart-container canvas {
+            max-height: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                padding: 1rem;
+            }
+            
+            .chart-container canvas {
+                max-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+            }
+            
+            .net-scores {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .chart-container {
+                padding: 1rem;
+            }
+            
+            .chart-container canvas {
+                max-height: 200px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card h2 {
+                font-size: 1.5rem;
+            }
+            
+            .countdown-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .net-scores {
+                gap: 0.5rem;
+            }
+            
+            .chart-container canvas {
+                max-height: 180px;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 DGS Deneme Takip</h1>
+            <p>Deneme sınavlarınızı takip edin ve performansınızı analiz edin</p>
+        </div>
+
+        <!-- DGS Countdown -->
+        <div class="card countdown">
+            <h2>DGS Sınavına Kalan Süre</h2>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">0</span>
+                    <span class="countdown-label">Gün</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">0</span>
+                    <span class="countdown-label">Saat</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">0</span>
+                    <span class="countdown-label">Dakika</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">0</span>
+                    <span class="countdown-label">Saniye</span>
+                </div>
+            </div>
+            <p>DGS Tarihi: 20 Temmuz 2025, 10:00</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value" id="totalExams">0</span>
+                <span class="stat-label">Toplam Deneme</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="averageNet">0.00</span>
+                <span class="stat-label">Ortalama Net</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="bestNet">0.00</span>
+                <span class="stat-label">En İyi Net</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value" id="worstNet">0.00</span>
+                <span class="stat-label">En Kötü Net</span>
+            </div>
+        </div>
+
+        <!-- Add Exam Form -->
+        <div class="card">
+            <h2>Yeni Deneme Ekle</h2>
+            
+            <div id="errorMessage" class="error" style="display: none;"></div>
+            <div id="successMessage" class="success" style="display: none;"></div>
+
+            <form id="examForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="examName">Deneme Adı</label>
+                        <input type="text" id="examName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="examDate">Deneme Tarihi</label>
+                        <input type="date" id="examDate" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Sayısal Bölüm</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="numericalCorrect">Doğru Sayısı</label>
+                        <input type="number" id="numericalCorrect" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numericalIncorrect">Yanlış Sayısı</label>
+                        <input type="number" id="numericalIncorrect" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numericalTotal">Toplam Soru</label>
+                        <input type="number" id="numericalTotal" min="1" value="50" required>
+                    </div>
+                </div>
+
+                <div class="section-title">Sözel Bölüm</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="verbalCorrect">Doğru Sayısı</label>
+                        <input type="number" id="verbalCorrect" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="verbalIncorrect">Yanlış Sayısı</label>
+                        <input type="number" id="verbalIncorrect" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="verbalTotal">Toplam Soru</label>
+                        <input type="number" id="verbalTotal" min="1" value="50" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeTaken">Harcanan Süre (dakika)</label>
+                    <input type="number" id="timeTaken" min="1" required>
+                </div>
+
+                <button type="submit" class="btn">Deneme Ekle</button>
+            </form>
+        </div>
+
+        <!-- Exam List -->
+        <div class="card">
+            <h2>Deneme Sonuçları</h2>
+            <div id="examList">
+                <div class="empty-state">
+                    <p>Henüz deneme eklenmedi. Yukarıdaki formu kullanarak ilk denemenizi ekleyin.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div id="chartsSection" style="display: none;">
+            <div class="card">
+                <h2>Net Gelişimi Grafikleri</h2>
+                
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>Sayısal Net Gelişimi</h3>
+                        <canvas id="numericalChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Sözel Net Gelişimi</h3>
+                        <canvas id="verbalChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container full-width">
+                        <h3>Toplam Net Gelişimi</h3>
+                        <canvas id="overallChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
